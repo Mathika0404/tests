@@ -1,0 +1,501 @@
+	<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<title>Generalcare Specialist Hospital - Premium Healthcare Services</title>
+	<meta name="description" content="Generalcare Specialist Hospital provides premium healthcare treatments and medical services with expert doctors and state-of-the-art facilities.">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="style.css"/>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+	<header class="navbar">
+		<div class="container nav-inner">
+			<div class="brand">
+				<!-- <div class="brand-mark" aria-hidden="true">
+					<i class="fas fa-plus"></i>
+				</div> -->
+				<div class="logo">
+					<img src="./stacklylogo.png" alt="stacklylogo">
+				</div>
+			</div>
+
+			<nav class="nav-links">
+				<a href="https://mathika0404.github.io/online-shop/" class="active">Home</a>
+				<a href="#services">Services</a>
+				<a href="#departments">Departments</a>
+				<a href="#doctors">Doctors</a>
+				<a href="#about">About Us</a>
+				<!-- <a href="#testimonials">Testimonials</a> -->
+				<a href="#contact">Contact</a>
+				<a class="btn btn-chip" href="#appointment">
+					<i class="fas fa-calendar-check"></i>
+					Book Appointment
+				</a>
+			</nav>
+			
+			<button class="mobile-menu-btn" id="mobileMenuBtn">
+				<i class="fas fa-bars"></i>
+			</button>
+		</div>
+	</header>
+  <style>
+    /* ---------- Global ---------- */
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #f0f2f5;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* ---------- Floating Buttons ---------- */
+    .floating-buttons {
+      position: relative;
+      top: 20px;
+      right: 20px;
+      z-index: 1100;
+	  margin-left: 1200px;
+    }
+
+    .floating-buttons button {
+      background: #99D4E9;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 5px;
+      transition: 0.3s;
+      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .floating-buttons button:hover {
+      background: #6FC9E7;
+      transform: translateY(-6px);
+    }
+
+    /* ---------- Popup Container ---------- */
+    .form-popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.9);
+      background-color: white;
+      padding: 0px;
+      border-radius: 10px;
+      box-shadow: 0 14px 28px rgba(0,0,0,0.25),
+                  0 10px 10px rgba(0,0,0,0.22);
+      width: 768px;
+      max-width: 90%;
+      min-height: 480px;
+      z-index: 1000;
+      opacity: 0;
+      animation: fadeSlideIn 0.4s ease forwards;
+    }
+
+    @keyframes fadeSlideIn {
+      from {
+        opacity: 0;
+        transform: translate(-50%, 40%) scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
+    }
+
+    /* ---------- Form Styling ---------- */
+    .form-container {
+      position: absolute;
+      top: 0;
+      height: 100%;
+      transition: all 0.6s ease-in-out;
+    }
+
+    form {
+      background-color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      padding: 0 50px;
+      height: 100%;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      border-radius: 18px;
+    }
+
+    h1 {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    input {
+      background-color: #eee;
+      border: none;
+      padding: 12px 15px;
+      margin: 8px 0;
+      width: 100%;
+      border-radius: 5px;
+    }
+
+    button.form-btn {
+      border-radius: 20px;
+      border: none;
+      background-color: #6FC9E7;
+      color: white;
+      font-size: 14px;
+      font-weight: bold;
+      padding: 12px 45px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      margin-top: 10px;
+	  margin-right: 100px;
+    }
+
+    .form-container.sign-in-container {
+      left: 0;
+      width: 50%;
+      z-index: 2;
+    }
+
+    .form-container.sign-up-container {
+      left: 0;
+      width: 50%;
+      opacity: 0;
+      z-index: 1;
+    }
+
+    .form-popup.right-panel-active .sign-in-container {
+      transform: translateX(100%);
+    }
+
+    .form-popup.right-panel-active .sign-up-container {
+      transform: translateX(100%);
+      opacity: 1;
+      z-index: 5;
+    }
+
+    /* ---------- Overlay ---------- */
+    .overlay-container {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 50%;
+      height: 100%;
+      overflow: hidden;
+      transition: transform 0.6s ease-in-out;
+      z-index: 100;
+      /* border-radius: 18px;
+      margin-left: 10px; */
+    }
+
+    .overlay {
+      background: linear-gradient(to right, #6FC9E7, #99D4E9);
+      color: #ffffff;
+      position: relative;
+      left: -100%;
+      height: 100%;
+      width: 200%;
+      transform: translateX(0);
+      transition: transform 0.6s ease-in-out;
+      /* border-radius: 18px; */
+    }
+
+    .form-popup.right-panel-active .overlay-container {
+      transform: translateX(-100%);
+    }
+
+    .form-popup.right-panel-active .overlay {
+      transform: translateX(50%);
+    }
+
+    .overlay-panel {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 0 40px;
+      text-align: center;
+      top: 0;
+      height: 100%;
+      width: 50%;
+      transition: transform 0.6s ease-in-out;
+    }
+
+    .overlay-left {
+      transform: translateX(-20%);
+    }
+
+    .overlay-right {
+      right: 0;
+      transform: translateX(0);
+    }
+
+    .form-popup.right-panel-active .overlay-left {
+      transform: translateX(0);
+    }
+
+    .form-popup.right-panel-active .overlay-right {
+      transform: translateX(20%);
+    }
+
+    /* ---------- Close Button ---------- */
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      background-color: #a3b3ca;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      z-index: 2000;
+    }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 768px) {
+      .form-popup {
+        width: 95%;
+        min-height: 600px;
+      }
+
+      .overlay-container, .form-container {
+        width: 100% !important;
+      }
+
+      .overlay {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Buttons -->
+  <div class="floating-buttons">
+    <button onclick="openPopup('signin')">Sign In</button>
+    <button onclick="openPopup('signup')">Sign Up</button>
+  </div>
+
+  <!-- Popup Form -->
+  <div class="form-popup" id="authPopup">
+    <button class="close-btn" onclick="closePopup()">X</button>
+
+    <!-- Sign Up -->
+    <div class="form-container sign-up-container">
+      <form id="signup-form">
+        <h1>Create Account</h1>
+        <input type="text" name="name" placeholder="Full Name" required />
+        <input type="email" name="email" placeholder="Email" required />
+        <input type="password" name="password" placeholder="Password" required />
+        <button class="form-btn" type="submit">Sign Up</button>
+      </form>
+    </div>
+
+    <!-- Sign In -->
+    <div class="form-container sign-in-container">
+      <form id="signin-form">
+        <h1>Sign In</h1>
+        <input type="email" name="email" placeholder="Email" required />
+        <input type="password" name="password" placeholder="Password" required />
+        <button class="form-btn" type="submit">Sign In</button>
+      </form>
+    </div>
+
+    <!-- Overlay -->
+    <div class="overlay-container">
+      <div class="overlay">
+        <div class="overlay-panel overlay-left">
+          <h1>Welcome Back!</h1>
+          <p>To stay connected, sign in with your personal info</p>
+          <button class="form-btn ghost" id="signIn">Sign In</button>
+        </div>
+        <div class="overlay-panel overlay-right">
+          <h1>Hello, Friend!</h1>
+          <p>Enter your details and start your journey with us</p>
+          <button class="form-btn ghost" id="signUp">Sign Up</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const authPopup = document.getElementById('authPopup');
+    const signUpBtn = document.getElementById('signUp');
+    const signInBtn = document.getElementById('signIn');
+
+    function openPopup(type) {
+      authPopup.style.display = 'block';
+      if (type === 'signup') {
+        authPopup.classList.add('right-panel-active');
+      } else {
+        authPopup.classList.remove('right-panel-active');
+      }
+    }
+
+    function closePopup() {
+      authPopup.style.display = 'none';
+    }
+
+    signUpBtn.addEventListener('click', () => {
+      authPopup.classList.add("right-panel-active");
+    });
+
+    signInBtn.addEventListener('click', () => {
+      authPopup.classList.remove("right-panel-active");
+    });
+
+    // Sign Up Submit
+    document.getElementById('signup-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name = this.name.value;
+      const email = this.email.value;
+      const password = this.password.value;
+      alert(`Account created for ${name}`);
+      this.reset();
+      closePopup();
+    });
+
+    // Sign In Submit
+    document.getElementById('signin-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const email = this.email.value;
+      const password = this.password.value;
+      alert(`Signed in as ${email}`);
+      this.reset();
+      closePopup();
+    });
+  </script>
+
+	<section class="hero" id="home">
+		<div class="container hero-inner">
+			<div class="hero-copy">
+				<h1>Premium Treatments for a Healthy Lifestyle</h1>
+				<p>
+					Experience world-class healthcare with our team of expert specialists. We provide comprehensive medical services with cutting-edge technology and compassionate care for you and your family.
+				</p>
+
+				<div class="cta-row">
+					<a href="#services" class="btn btn-primary">
+						<i class="fas fa-stethoscope"></i>
+						Our Services
+					</a>
+					<div class="online-chip">
+						<span class="dot"></span> 
+						2500+ Doctors Online
+					</div>
+				</div>
+
+				<div class="search-card">
+					<div class="search-icon">
+						<i class="fas fa-search"></i>
+					</div>
+					<input type="text" placeholder="Search for doctors, departments, or treatments" aria-label="Search medical services"/>
+					<button class="btn btn-dark">
+						<i class="fas fa-search"></i>
+						Search
+					</button>
+				</div>
+			</div>
+
+			<div class="hero-visual">
+				<div class="blob"></div>
+				<img src="./doctor.png" alt="Professional Doctor" class="doctor-img">
+				<div class="floating-card">
+					<div class="card-icon">
+						<i class="fas fa-user-md"></i>
+					</div>
+					<div class="card-content">
+						<div class="card-title">Dr. Johnson</div>
+						<div class="card-subtitle">Cardiologist</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="stats">
+		<div class="container stat-grid">
+			<div class="stat">
+				<div class="stat-icon">
+					<i class="fas fa-smile"></i>
+				</div>
+				<div class="stat-value">4500+</div>
+				<div class="stat-label">Happy Patients</div>
+			</div>
+			<div class="stat">
+				<div class="stat-icon">
+					<i class="fas fa-bed"></i>
+				</div>
+				<div class="stat-value">200</div>
+				<div class="stat-label">Hospital Rooms</div>
+			</div>
+			<div class="stat">
+				<div class="stat-icon">
+					<i class="fas fa-trophy"></i>
+				</div>
+				<div class="stat-value">500+</div>
+				<div class="stat-label">Awards Won</div>
+			</div>
+			<div class="stat">
+				<div class="stat-icon">
+					<i class="fas fa-ambulance"></i>
+				</div>
+				<div class="stat-value">20+</div>
+				<div class="stat-label">Ambulances</div>
+			</div>
+		</div>
+	</section>
+<section class="departments" id="departments">
+  <div class="container">
+    <div class="section-header">
+      <h2>Our Departments</h2>
+      <p class="subtle">Comprehensive healthcare services across all major medical specialties</p>
+    </div>
+    <div class="dept-grid">
+      <div class="dept">
+        <div class="dept-icon"><i class="fas fa-stethoscope"></i></div>
+        <div class="dept-name">General Medicine</div>
+        <div class="dept-desc">Primary care and preventive medicine</div>
+      </div>
+      <div class="dept">
+        <div class="dept-icon"><i class="fas fa-heart"></i></div>
+        <div class="dept-name">Cardiology</div>
+        <div class="dept-desc">Heart and cardiovascular care</div>
+      </div>
+      <div class="dept">
+        <div class="dept-icon"><i class="fas fa-lungs"></i></div>
+        <div class="dept-name">Pulmonology</div>
+        <div class="dept-desc">Respiratory system treatment</div>
+      </div>
+      <div class="dept">
+        <div class="dept-icon"><i class="fas fa-tooth"></i></div>
+        <div class="dept-name">Dental Care</div>
+        <div class="dept-desc">Oral health and dental surgery</div>
+      </div>
+      <div class="dept">
+        <div class="dept-icon"><i class="fas fa-brain"></i></div>
+        <div class="dept-name">Neurology</div>
+        <div class="dept-desc">Brain and nervous system care</div>
+      </div>
+      <div class="dept">
+        <div class="dept-icon"><i class="fas fa-bone"></i></div>
+        <div class="dept-name">Orthopedics</div>
+        <div class="dept-desc">Bone and joint treatment</div>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>
